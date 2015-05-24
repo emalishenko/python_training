@@ -1,25 +1,20 @@
-# -*- coding: utf-8 -*-
+__author__ = 'emalishenko'
+
 from selenium.webdriver.firefox.webdriver import WebDriver
-import unittest
-from contact import Contact
 
-def is_alert_present(wd):
-    try:
-        wd.switch_to_alert().text
-        return True
-    except:
-        return False
+class Application:
 
-class test_add_contact(unittest.TestCase):
-    def setUp(self):
+    def __init__(self):
         self.wd = WebDriver()
         self.wd.implicitly_wait(60)
 
-    def open_homepage(self, wd):
+    def open_homepage(self):
+        wd = self.wd
         wd.get("http://localhost/addressbook/index.php")
 
-    def login(self, wd, user_name, password):
-        self.open_homepage(wd)
+    def login(self, user_name, password):
+        wd = self.wd
+        self.open_homepage()
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys(user_name)
@@ -28,7 +23,8 @@ class test_add_contact(unittest.TestCase):
         wd.find_element_by_name("pass").send_keys(password)
         wd.find_element_by_css_selector("input[type=\"submit\"]").click()
 
-    def create_contact(self, wd, contact):
+    def create_contact(self, contact):
+        wd = self.wd
         # init contact creation
         wd.find_element_by_link_text("add new").click()
         # fill contact form
@@ -47,17 +43,38 @@ class test_add_contact(unittest.TestCase):
         # submit new contact
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
 
-    def logout(self, wd):
+    def open_groups_page(self):
+        wd = self.wd
+        wd.find_element_by_link_text("groups").click()
+
+    def create_group(self, group):
+        wd = self.wd
+        self.open_groups_page()
+        # init group creation
+        wd.find_element_by_name("new").click()
+        # fill group form
+        wd.find_element_by_name("group_name").click()
+        wd.find_element_by_name("group_name").clear()
+        wd.find_element_by_name("group_name").send_keys(group.name)
+        wd.find_element_by_name("group_header").click()
+        wd.find_element_by_name("group_header").clear()
+        wd.find_element_by_name("group_header").send_keys(group.header)
+        wd.find_element_by_name("group_footer").click()
+        wd.find_element_by_name("group_footer").clear()
+        wd.find_element_by_name("group_footer").send_keys(group.footer)
+        # submit group creation
+        wd.find_element_by_name("submit").click()
+        self.return_to_groups_page()
+
+    def return_to_groups_page(self):
+        wd = self.wd
+        wd.find_element_by_link_text("group page").click()
+
+    def logout(self):
+        wd = self.wd
         wd.find_element_by_link_text("Logout").click()
 
-    def test_add_contact(self):
-        wd = self.wd
-        self.login(wd, user_name = "admin", password = "secret")
-        self.create_contact(wd, Contact(first_name = "First Name", middle_name = "Middle Name", last_name = "Last Name", nick = "Nick"))
-        self.logout(wd)
-
-    def tearDown(self):
+    def destroy(self):
         self.wd.quit()
 
-if __name__ == '__main__':
-    unittest.main()
+

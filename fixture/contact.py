@@ -21,7 +21,7 @@ class ContactHelper:
         wd.find_element_by_xpath("//div[@id='content']/form[2]/div[2]/input").click()
         # submit deleting
         wd.switch_to_alert().accept()
-        wd.find_element_by_link_text("home").click()
+        self.open_homepage()
 
     def edit_first_contact(self, contact):
         wd = self.app.wd
@@ -49,3 +49,12 @@ class ContactHelper:
             wd.find_element_by_name(field_name).click()
             wd.find_element_by_name(field_name).clear()
             wd.find_element_by_name(field_name).send_keys(text)
+
+    def count(self):
+        wd = self.app.wd
+        self.open_homepage()
+        return len(wd.find_elements_by_name("selected[]"))
+
+    def open_homepage(self):
+        wd = self.app.wd
+        wd.find_element_by_link_text("home").click()

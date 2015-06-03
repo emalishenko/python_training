@@ -57,4 +57,5 @@ class ContactHelper:
 
     def open_homepage(self):
         wd = self.app.wd
-        wd.find_element_by_link_text("home").click()
+        if not (wd.current_url.endswith("/index.php")):
+            wd.find_element_by_link_text("home").click()

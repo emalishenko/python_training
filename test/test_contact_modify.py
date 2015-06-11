@@ -3,7 +3,7 @@ __author__ = 'emalishenko'
 from model.contact import Contact
 from random import randrange
 
-def test_edit_first_contact_name(app):
+def test_modify_contact_first_name(app):
     contact = Contact(first_name = "First Name Update")
     if app.contact.count() == 0:
         app.contact.create(Contact(first_name = "To be modified", middle_name = "To be modified", last_name = "To be modified", nick = "To be modified"))
@@ -19,7 +19,7 @@ def test_edit_first_contact_name(app):
 
 
 
-# def test_edit_first_contact_mid_name(app):
+# def test_modify_first_contact_mid_name(app):
 #     if app.contact.count() == 0:
 #         app.contact.create(Contact(first_name = "To be modified", middle_name = "To be modified", last_name = "To be modified", nick = "To be modified"))
 #     old_contacts = app.contact.get_contact_list()

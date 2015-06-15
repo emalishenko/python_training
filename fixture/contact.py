@@ -95,11 +95,12 @@ class ContactHelper:
                 cells = row.find_elements_by_tag_name("td")
                 lastname = cells[1].text
                 firstname = cells[2].text
+                address = cells[3].text
+                all_emails = cells[4].text
+                all_phones = cells[5].text
                 id = row.find_element_by_name("selected[]").get_attribute("value")
-                all_phones = cells[5].text.splitlines()
                 self.contact_cache.append(Contact(firstname = firstname, lastname = lastname, id = id,
-                                                  homephone = all_phones[0], mobilephone = all_phones[1],
-                                                  workphone = all_phones[2], secondaryphone=all_phones[3]))
+                                                  address = address, all_phones_from_homepage = all_phones, all_emails_from_homepage = all_emails))
         return list(self.contact_cache)
 
     def get_contact_info_from_edit_page(self, index):
@@ -112,9 +113,14 @@ class ContactHelper:
         workphone = wd.find_element_by_name("work").get_attribute("value")
         mobilephone = wd.find_element_by_name("mobile").get_attribute("value")
         secondaryphone = wd.find_element_by_name("phone2").get_attribute("value")
+        address = wd.find_element_by_name("address").get_attribute("value")
+        email = wd.find_element_by_name("email").get_attribute("value")
+        email2 = wd.find_element_by_name("email2").get_attribute("value")
+        email3 = wd.find_element_by_name("email3").get_attribute("value")
         return Contact(firstname = firstname, lastname = lastname, id = id,
-                       homephone = homephone, workphone = workphone,
-                       mobilephone = mobilephone, secondaryphone=secondaryphone)
+                       address = address, homephone = homephone, workphone = workphone,
+                       mobilephone = mobilephone, secondaryphone=secondaryphone,
+                       email = email, email2 = email2, email3 = email3)
 
     def get_contact_from_view_page(self, index):
         wd = self.app.wd
@@ -126,6 +132,12 @@ class ContactHelper:
         secondaryphone = re.search("P: (.*)",text).group(1)
         return Contact(homephone = homephone, workphone = workphone,
                        mobilephone = mobilephone, secondaryphone = secondaryphone)
+
+    def format_fields_like_on_homepage(self, lift_of_fields):
+        return "\n".join(map(lambda x: re.sub("\A\s+|\s+\Z", "", x),
+                             filter(lambda x: x != "",
+                                    filter(lambda x: x is not None, lift_of_fields))))
+
 
 
 

@@ -17,7 +17,6 @@ testdata = [Group(name="", header="", footer="")] + [
 @pytest.mark.parametrize("group", testdata, ids = [repr(x) for x in testdata])
 def test_add_group(app, group):
     old_groups = app.group.get_group_list()
-    #group = Group(name="Test Grop1", header="Header text1", footer="Footer text1")
     app.group.create(group)
     assert len(old_groups) + 1 == app.group.count()
     new_groups = app.group.get_group_list()

@@ -21,6 +21,7 @@ class Contact:
         self.homephone = homephone
         self.mobilephone = mobilephone
         self.workphone = workphone
+        self.fax = fax
         self.all_emails_from_homepage = all_emails_from_homepage
         self.email = email
         self.email2 = email2

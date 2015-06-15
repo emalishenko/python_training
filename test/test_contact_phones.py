@@ -18,8 +18,8 @@ def test_phones_on_home_page(app):
 #     assert contact_from_view_page.mobilephone == contact_from_editpage.mobilephone
 #     assert contact_from_view_page.secondaryphone == contact_from_editpage.secondaryphone
 
-def clear(list):
-    return map(lambda x: re.sub("[() -]", "", x), list)
+def clear(l):
+    return map(lambda x: re.sub("[/() -]", "", x), l)
 
 # def merge_phones_like_on_homepage(contact):
 #     return "\n".join(filter(lambda x: x != "",
